@@ -8,9 +8,20 @@
 
 /*
 
+PLAYER
+*/
+const player = (name, marker) => {
+  return { name, marker };
+};
+
+/*
+
 GAME
 */
 const stateGame = (() => {
+  let firstPlayer = player('First Player', 'X');
+  let secondPlayer = player('Second Player', 'O');
+
   let firstPlayerTurn = true;
   // Random first player?
   //   let firstPlayerTurn = Math.floor(Math.random() * 2);
@@ -40,12 +51,28 @@ const stateGame = (() => {
       } else {
         const allButtons = Array.from(document.querySelectorAll('button'));
         allButtons.pop();
+        allButtons.shift();
         if (allButtons.every((i) => i.disabled === true)) {
           return (theEnd = 'tie');
         }
       }
     });
     return theEnd;
+  };
+
+  const changeNames = () => {
+    const inputFirstPlayer = document.getElementById('first-player');
+    const inputSecondPlayer = document.getElementById('second-player');
+
+    if (inputFirstPlayer.value !== '') {
+      firstPlayer.name = inputFirstPlayer.value;
+    }
+
+    if (inputSecondPlayer.value !== '') {
+      secondPlayer.name = inputSecondPlayer.value;
+    }
+    inputFirstPlayer.value = '';
+    inputSecondPlayer.value = '';
   };
 
   const playTurn = (e, args) => {
@@ -60,26 +87,32 @@ const stateGame = (() => {
     if (gameOver === 'tie') {
       gameOverText.textContent = "Game Over. It's a Tie!";
     } else if (gameOver === 'X') {
-      gameOverText.textContent = 'Game Over. Player 1 Won!';
+      gameOverText.textContent = `Game Over. ${firstPlayer.name} Won!`;
       displayController.disableButtons();
     } else if (gameOver === 'O') {
-      gameOverText.textContent = 'Game Over. Player 2 Won!';
+      gameOverText.textContent = `Game Over. ${secondPlayer.name} Won!`;
       displayController.disableButtons();
     } else {
       firstPlayerTurn = !firstPlayerTurn;
+      const subTitle = document.querySelector('h2');
+      subTitle.textContent = `${
+        firstPlayerTurn ? firstPlayer.name : secondPlayer.name
+      } Turn (${
+        firstPlayerTurn ? firstPlayer.marker : secondPlayer.marker
+      })`;
     }
   };
 
   const resetGame = () => {
     const gameOverText = document.querySelector('.game-over-text');
-    gameOverText.textContent = ''
+    gameOverText.textContent = '';
     theEnd = false;
     gameBoard.resetBoard();
     displayController.enableButtons();
     displayController.render();
   };
 
-  return { firstPlayerTurn, playTurn, resetGame };
+  return { firstPlayerTurn, playTurn, resetGame, changeNames };
 })();
 
 /*
@@ -106,27 +139,22 @@ const gameBoard = (() => {
 
 /*
 
-PLAYER
-*/
-const Player = (name, marker) => {
-  name, marker;
-};
-
-/*
-
 DISPLAY
 */
 const displayController = (() => {
   const buttons = Array.from(document.querySelectorAll('button'));
   const resetButton = buttons.pop();
+  const changeNamesButton = buttons.shift();
 
   resetButton.addEventListener('click', stateGame.resetGame);
+
+  changeNamesButton.addEventListener('click', stateGame.changeNames);
 
   buttons.forEach((b) => {
     b.addEventListener('click', stateGame.playTurn.bind(this, b));
   });
 
-  const render = () => {
+  const render = (title, endGame) => {
     let board = gameBoard.getBoard();
     let i = 0;
     buttons.forEach((btn) => {

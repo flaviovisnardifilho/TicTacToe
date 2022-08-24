@@ -12,18 +12,51 @@
     <section class="container">
       <h1>TicTacToe</h1>
 
-      <h2>First Player Turn</h2>
+      <h2>First Player Turn (X)</h2>
+
+      <div class="change-name">
+        <input
+          type="text"
+          id="first-player"
+          name="first-player"
+          placeholder="First Player"
+        />
+        <input
+          type="text"
+          id="second-player"
+          name="second-player"
+          placeholder="Second Player"
+        />
+        <button class="add-names">Change Names</button>
+    </div>
+
+
 
       <div class="gameboard">
-        <button class="0 row1 col1 diag1" onclick="this.disabled = true;"></button>
+        <button
+          class="0 row1 col1 diag1"
+          onclick="this.disabled = true;"
+        ></button>
         <button class="1 row1 col2" onclick="this.disabled = true;"></button>
-        <button class="2 row1 col3 diag2" onclick="this.disabled = true;"></button>
+        <button
+          class="2 row1 col3 diag2"
+          onclick="this.disabled = true;"
+        ></button>
         <button class="3 row2 col1" onclick="this.disabled = true;"></button>
-        <button class="4 row2 col2 diag1 diag2" onclick="this.disabled = true;"></button>
+        <button
+          class="4 row2 col2 diag1 diag2"
+          onclick="this.disabled = true;"
+        ></button>
         <button class="5 row2 col3" onclick="this.disabled = true;"></button>
-        <button class="6 row3 col1 diag2" onclick="this.disabled = true;"></button>
+        <button
+          class="6 row3 col1 diag2"
+          onclick="this.disabled = true;"
+        ></button>
         <button class="7 row3 col2" onclick="this.disabled = true;"></button>
-        <button class="8 row3 col3 diag1" onclick="this.disabled = true;"></button>
+        <button
+          class="8 row3 col3 diag1"
+          onclick="this.disabled = true;"
+        ></button>
       </div>
 
       <button class="reset-button">Reset Game</button>
